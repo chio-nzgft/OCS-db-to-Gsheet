@@ -21,5 +21,8 @@ try:
 except Exception as ex:
     print('connect google fail ', ex)
     sys.exit(1)
+    
+worksheet.update_acell('A1', "HARDWARE_ID")
+worksheet.update_acell('B1', "TAG")
 for row in rows:
     worksheet.append_row((row[0],row[1]))
