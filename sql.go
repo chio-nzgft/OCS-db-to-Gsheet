@@ -8,9 +8,9 @@ import (
 
 const (
     DB_HOST = "tcp(127.0.0.1:3306)"
-    DB_NAME = "ocsdb"
-    DB_USER = "ocsuser"
-    DB_PASS = "ocspass"
+    DB_NAME = "ocsweb"
+    DB_USER = "ocs"
+    DB_PASS = "ocssecret"
 )
 
 func main() {
@@ -33,13 +33,19 @@ func main() {
     }
 
     rawResult := make([][]byte, len(cols))
-    result := make([]string, len(cols))
-
-    dest := make([]interface{}, len(cols)) // A temporary interface{} slice
-    for i, _ := range rawResult {
-        dest[i] = &rawResult[i] // Put pointers to each string in the interface slice
+    result := make([][]string,  len(cols))
+    for i := range result {
+        result[i] = make([]string, 1000) // moust know how many Next cows
     }
+
+    dest := make([]interface{}, len(cols))
+    for i, _ := range rawResult {
+        dest[i] = &rawResult[i]
+    }
+    var k int
+    k = -1
     for rows.Next() {
+        k = k +1
         err = rows.Scan(dest...)
         if err != nil {
             fmt.Println("Failed to scan row", err)
@@ -48,15 +54,14 @@ func main() {
 
         for i, raw := range rawResult {
             if raw == nil {
-                result[i] = "\\N"
+                result[i][k] = "\\N"
             } else {
-                result[i] = string(raw)
+                result[i][k] = string(raw)
             }
         }
 
-       // fmt.Printf("%#v\n", result)
-        for i:= 0; i < len(result); i++ {
-               fmt.Print(result[i])
+        for i:= 0; i < len(cols) ; i++ {
+               fmt.Print(result[i][k])
                fmt.Print(" ")
         }
         fmt.Println(" ")
