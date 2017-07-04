@@ -28,7 +28,7 @@ func main() {
         }
 
         // Update cell content
-        sheet.Update(0, 0, "hogehoge")
+        sheet.Update(0, 0, "Change !!")
 
         // Make sure call Synchronize to reflect the changes
         err = sheet.Synchronize()
