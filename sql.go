@@ -8,9 +8,9 @@ import (
 
 const (
     DB_HOST = "tcp(127.0.0.1:3306)"
-    DB_NAME = "ocsweb"
-    DB_USER = "ocs"
-    DB_PASS = "ocssecret"
+    DB_NAME = "ocsdb"
+    DB_USER = "ocsuser"
+    DB_PASS = "ocspass"
 )
 
 func main() {
