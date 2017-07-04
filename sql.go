@@ -54,6 +54,11 @@ func main() {
             }
         }
 
-        fmt.Printf("%#v\n", result)
+       // fmt.Printf("%#v\n", result)
+        for i:= 0; i < len(result); i++ {
+               fmt.Print(result[i])
+               fmt.Print(" ")
+        }
+        fmt.Println(" ")
     }
 }
