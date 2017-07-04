@@ -1,4 +1,4 @@
-# OCS-NG--DB--Python
+# OCS-NG--DB-TO_GoogleSheet
 Python get MYSQL (OCS) to google spreadsheets
 
 # OCS-db-to-gsheet.py
