@@ -75,7 +75,7 @@ func main() {
     // connect db
     dsn := DB_USER + ":" + DB_PASS + "@" + DB_HOST + "/" + DB_NAME + "?charset=utf8"
     db, err := sql.Open("mysql", dsn)
-    checkErr("Failed to run query",err)
+    checkErr("Failed to connect db",err)
     defer db.Close()
 
     //query get count 
