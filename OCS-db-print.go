@@ -7,6 +7,7 @@ import (
     "os"
 )
 
+// DB info
 const (
     DB_HOST = "tcp(127.0.0.1:3306)"
     DB_NAME = "ocsdb"
@@ -14,6 +15,7 @@ const (
     DB_PASS = "ocspass"
 )
 
+// for get table count
 func checkCount(rows *sql.Rows) (count int) {
         for rows.Next() {
         err:= rows.Scan(&count)
@@ -22,6 +24,7 @@ func checkCount(rows *sql.Rows) (count int) {
     return count
 }
 
+// only for err print & exit
 func checkErr(w_msg string, err error) {
     if err != nil {
        fmt.Println(w_msg,err)
