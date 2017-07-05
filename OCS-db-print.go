@@ -7,24 +7,28 @@ import (
     "os"
 )
 
-// DB info
 const (
     DB_HOST = "tcp(127.0.0.1:3306)"
-    DB_NAME = "ocsdb"
-    DB_USER = "ocsuser"
-    DB_PASS = "ocspass"
+    DB_NAME = "ocsweb"
+    DB_USER = "ocs"
+    DB_PASS = "ocssecret"
 )
 
-// for get table count
 func checkCount(rows *sql.Rows) (count int) {
         for rows.Next() {
         err:= rows.Scan(&count)
-        checkErr("select count fail",err )
+        checkErr("Fail to get count ",err )
     }
     return count
 }
 
-// only for err print & exit
+func checkRow(rows *sql.Rows)(int) {
+        cols, err:=  rows.Columns()
+        checkErr("Failed to get columns",err )
+        return len(cols)
+}
+
+
 func checkErr(w_msg string, err error) {
     if err != nil {
        fmt.Println(w_msg,err)
@@ -34,7 +38,7 @@ func checkErr(w_msg string, err error) {
 }
 
 func main() {
-    var len_count int
+    var len_count,len_cols int
     dsn := DB_USER + ":" + DB_PASS + "@" + DB_HOST + "/" + DB_NAME + "?charset=utf8"
     db, err := sql.Open("mysql", dsn)
     checkErr("Failed to run query",err)
@@ -47,19 +51,17 @@ func main() {
 
     rows, err := db.Query("select * from accountinfo")
     checkErr("Failed to run query", err)
+    len_cols = checkRow(rows)
     defer rows.Close()
 
-    cols, err := rows.Columns()
-    checkErr("Failed to get columns", err)
-
-    rawResult := make([][]byte, len(cols))
-    result := make([][]string,  len(cols))
+    rawResult := make([][]byte, len_cols)
+    result := make([][]string,  len_cols)
 
      for i := range result {
         result[i] = make([]string, len_count)
     }
 
-    dest := make([]interface{}, len(cols))
+    dest := make([]interface{}, len_cols)
     for i, _ := range rawResult {
         dest[i] = &rawResult[i]
     }
@@ -78,7 +80,7 @@ func main() {
             }
         }
 
-        for i:= 0; i < len(cols) ; i++ {
+        for i:= 0; i < len_cols ; i++ {
                fmt.Print(result[i][k])
                fmt.Print(" ")
         }
